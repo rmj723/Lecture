@@ -7,40 +7,46 @@ const load_icon = document.getElementById('loader');
 
 var App = function () {
 
-    const scene = Utils.Scene();
-    const camera = Utils.Camera(container);
-    const renderer = Utils.Renderer(container);
-    const orbit = Utils.Controls(camera, renderer);
-    Utils.BuildLights(scene);
-    Utils.Resizer(container, camera, renderer);
+    this.scene = Utils.Scene();
+    this.camera = Utils.Camera(container);
+    this.renderer = Utils.Renderer(container);
+    this.orbit = Utils.Controls(this.camera, this.renderer);
+}
 
-    this.start = async function () {
+Object.assign(App.prototype, {
 
-        this.model = await Utils.loadModel(scene, renderer);
+    start: async function () {
+
+        Utils.BuildLights(this.scene);
+        Utils.Resizer(container, this.camera, this.renderer);
+
+        this.model = await Utils.loadModel(this.scene, this.renderer);
 
         load_icon.style.display = 'none';
 
-        createObjects(scene);
+        createObjects(this.scene);
 
         this.animate();
-    }
+    },
 
 
-    this.animate = function () {
+    animate: function () {
 
         const clock = new THREE.Clock();
 
         const render = () => {
 
             const delta = clock.getDelta();
-            // this.model.tick(delta);
-            renderer.render(scene, camera);
-            orbit.update();
+            this.model.tick(delta);
+            this.renderer.render(this.scene, this.camera);
+            this.orbit.update();
             requestAnimationFrame(render);
         }
         render();
     }
-}
+})
+
+
 
 
 console.clear();
