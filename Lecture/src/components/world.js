@@ -42,6 +42,11 @@ class World {
         plane.rotation.x = -Math.PI / 2;
         plane.receiveShadow = true;
         scene.add(model, plane);
+
+        var worker = new Worker('src/components/worker/worker.js', { type: "module" });
+        worker.onmessage = function (e) {
+            console.log(e.data);
+        }
     }
 
 
