@@ -57,18 +57,15 @@ const Utils = {
 
     Resizer: function (container, camera, renderer) {
 
-        const setSize = (container, camera, renderer) => {
+        const setSize = () => {
             camera.aspect = container.clientWidth / container.clientHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(container.clientWidth, container.clientHeight);
             renderer.setPixelRatio(window.devicePixelRatio);
         }
 
-        setSize(container, camera, renderer);
-
-        window.addEventListener('resize', () => {
-            setSize(container, camera, renderer);
-        });
+        setSize();
+        window.addEventListener('resize', setSize);
     },
 
     loadModel: async function (scene, renderer) {
